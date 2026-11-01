@@ -18,4 +18,34 @@ class Titulo
             Ejemplares[i] = true;
         }
     }
+    
+        public int Disponibles()
+    {
+        int contador = 0;
+
+        for (int i = 0; i < Ejemplares.Length; i++)
+        {
+            if (Ejemplares[i] == true)
+            {
+                contador++;
+            }
+        }
+
+        return contador;
+    }
+
+   public void Prestar()
+    {
+        for (int i = 0; i < Ejemplares.Length; i++)
+        {
+            if (Ejemplares[i] == true)
+            {
+                Ejemplares[i] = false;
+                Prestamos++;
+                return;
+            }
+        }
+
+        Console.WriteLine("No hay copias disponibles de " + Nombre);
+    }
 }

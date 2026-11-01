@@ -14,5 +14,16 @@ Console.WriteLine();
 
 foreach (Titulo libro in libros)
 {
-    Console.WriteLine(libro.Nombre + " - Copias: " + libro.Ejemplares.Length);
+    Console.WriteLine(libro.Nombre + " - copias: " + libro.Ejemplares.Length);
+}
+libros[2].Prestar();
+libros[3].Prestar();
+libros[6].Prestar();
+
+Console.WriteLine();
+Console.WriteLine("Prueba de préstamos:");
+
+foreach (Titulo libro in libros)
+{
+    Console.WriteLine(libro.Nombre + " - Disponibles: " + libro.Disponibles() + " - Préstamos: " + libro.Prestamos);
 }
