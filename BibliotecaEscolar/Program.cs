@@ -27,3 +27,36 @@ foreach (Titulo libro in libros)
 {
     Console.WriteLine(libro.Nombre + " - Disponibles: " + libro.Disponibles() + " - Préstamos: " + libro.Prestamos);
 }
+
+for (int i = 1; i < libros.Count; i++)
+{
+    Titulo actual = libros[i];
+    int j = i - 1;
+
+    while (j >= 0 && libros[j].Prestamos < actual.Prestamos)
+    {
+        libros[j + 1] = libros[j];
+        j--;
+    }
+
+    libros[j + 1] = actual;
+}
+
+Console.WriteLine();
+Console.WriteLine("Catálogo ordenado por préstamos:");
+
+foreach (Titulo libro in libros)
+{
+    Console.WriteLine(libro.Nombre + " - Préstamos: " + libro.Prestamos);
+}
+
+Console.WriteLine();
+Console.WriteLine("Libros con los mismos préstamos:");
+
+for (int i = 0; i < libros.Count - 1; i++)
+{
+    if (libros[i].Prestamos == libros[i + 1].Prestamos)
+    {
+        Console.WriteLine(libros[i].Nombre + " va antes que " + libros[i + 1].Nombre + " (" + libros[i].Prestamos + " préstamos)");
+    }
+}
