@@ -60,3 +60,96 @@ for (int i = 0; i < libros.Count - 1; i++)
         Console.WriteLine(libros[i].Nombre + " va antes que " + libros[i + 1].Nombre + " (" + libros[i].Prestamos + " préstamos)");
     }
 }
+
+List<Titulo> porIsbn = new List<Titulo>(libros);
+
+for (int i = 1; i < porIsbn.Count; i++)
+{
+    Titulo actual = porIsbn[i];
+    int j = i - 1;
+
+    while (j >= 0 && porIsbn[j].Isbn > actual.Isbn)
+    {
+        porIsbn[j + 1] = porIsbn[j];
+        j--;
+    }
+
+    porIsbn[j + 1] = actual;
+}
+
+Console.WriteLine();
+Console.WriteLine("Búsqueda por ISBN:");
+
+long[] isbns = { 2508077564065, 2508070000000 };
+
+foreach (long isbn in isbns)
+{
+    int posicion = BuscarPorIsbn(porIsbn, isbn);
+
+    if (posicion == -1)
+    {
+        Console.WriteLine(isbn + "  No existe ningún libro con ese ISBN");
+    }
+    else
+    {
+        Console.WriteLine(isbn + " - " + porIsbn[posicion].Nombre + "  Disponibles: " + porIsbn[posicion].Disponibles());
+    }
+}
+
+Console.WriteLine();
+Console.WriteLine("Búsqueda por título:");
+
+string[] nombres = { "Mulan", "Peter Pan" };
+
+foreach (string nombre in nombres)
+{
+    int posicion = BuscarPorTitulo(libros, nombre);
+
+    if (posicion == -1)
+    {
+        Console.WriteLine(nombre + "  No existe ningún libro con ese título");
+    }
+    else
+    {
+        Console.WriteLine(nombre + "  Disponibles: " + libros[posicion].Disponibles());
+    }
+}
+
+int BuscarPorIsbn(List<Titulo> lista, long isbn)
+{
+    int inicio = 0;
+    int fin = lista.Count - 1;
+
+    while (inicio <= fin)
+    {
+        int medio = (inicio + fin) / 2;
+
+        if (lista[medio].Isbn == isbn)
+        {
+            return medio;
+        }
+        else if (lista[medio].Isbn < isbn)
+        {
+            inicio = medio + 1;
+        }
+        else
+        {
+            fin = medio - 1;
+        }
+    }
+
+    return -1;
+}
+
+int BuscarPorTitulo(List<Titulo> lista, string nombre)
+{
+    for (int i = 0; i < lista.Count; i++)
+    {
+        if (lista[i].Nombre == nombre)
+        {
+            return i;
+        }
+    }
+
+    return -1;
+}
