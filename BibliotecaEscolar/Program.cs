@@ -14,7 +14,7 @@ Console.WriteLine();
 
 foreach (Titulo libro in libros)
 {
-    Console.WriteLine(libro.Nombre + " - copias: " + libro.Ejemplares.Length);
+    Console.WriteLine(libro.Nombre + "  copias: " + libro.Ejemplares.Length);
 }
 libros[2].Prestar();
 libros[3].Prestar();
@@ -25,29 +25,17 @@ Console.WriteLine("Prueba de préstamos:");
 
 foreach (Titulo libro in libros)
 {
-    Console.WriteLine(libro.Nombre + " - Disponibles: " + libro.Disponibles() + " - Préstamos: " + libro.Prestamos);
+    Console.WriteLine(libro.Nombre + "  Disponibles: " + libro.Disponibles() + "  Préstamos: " + libro.Prestamos);
 }
 
-for (int i = 1; i < libros.Count; i++)
-{
-    Titulo actual = libros[i];
-    int j = i - 1;
-
-    while (j >= 0 && libros[j].Prestamos < actual.Prestamos)
-    {
-        libros[j + 1] = libros[j];
-        j--;
-    }
-
-    libros[j + 1] = actual;
-}
+OrdenarPorPrestamos(libros);
 
 Console.WriteLine();
 Console.WriteLine("Catálogo ordenado por préstamos:");
 
 foreach (Titulo libro in libros)
 {
-    Console.WriteLine(libro.Nombre + " - Préstamos: " + libro.Prestamos);
+    Console.WriteLine(libro.Nombre + "  Préstamos: " + libro.Prestamos);
 }
 
 Console.WriteLine();
@@ -115,6 +103,44 @@ foreach (string nombre in nombres)
     }
 }
 
+Console.WriteLine();
+Console.WriteLine("Catálogo antes de los préstamos:");
+
+foreach (Titulo libro in libros)
+{
+    Console.WriteLine(libro.Nombre + "  Disponibles: " + libro.Disponibles() + "  Préstamos: " + libro.Prestamos);
+}
+
+Console.WriteLine();
+Console.WriteLine("Préstamos registrados:");
+
+long[] nuevosPrestamos = { 2508078875955, 2508077564065, 2508078096107 };
+
+foreach (long isbn in nuevosPrestamos)
+{
+    int posicion = BuscarPorIsbn(porIsbn, isbn);
+
+    if (posicion == -1)
+    {
+        Console.WriteLine(isbn + "  No existe ningún libro con ese ISBN");
+    }
+    else
+    {
+        porIsbn[posicion].Prestar();
+        Console.WriteLine(porIsbn[posicion].Nombre + "  Disponibles: " + porIsbn[posicion].Disponibles() + "  Préstamos: " + porIsbn[posicion].Prestamos);
+    }
+}
+
+OrdenarPorPrestamos(libros);
+
+Console.WriteLine();
+Console.WriteLine("Catálogo después de los préstamos:");
+
+foreach (Titulo libro in libros)
+{
+    Console.WriteLine(libro.Nombre + "  Disponibles: " + libro.Disponibles() + "  Préstamos: " + libro.Prestamos);
+}
+
 int BuscarPorIsbn(List<Titulo> lista, long isbn)
 {
     int inicio = 0;
@@ -152,4 +178,21 @@ int BuscarPorTitulo(List<Titulo> lista, string nombre)
     }
 
     return -1;
+}
+
+void OrdenarPorPrestamos(List<Titulo> lista)
+{
+    for (int i = 1; i < lista.Count; i++)
+    {
+        Titulo actual = lista[i];
+        int j = i - 1;
+
+        while (j >= 0 && lista[j].Prestamos < actual.Prestamos)
+        {
+            lista[j + 1] = lista[j];
+            j--;
+        }
+
+        lista[j + 1] = actual;
+    }
 }
