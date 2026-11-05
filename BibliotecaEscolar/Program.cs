@@ -65,6 +65,8 @@ for (int i = 1; i < porIsbn.Count; i++)
     porIsbn[j + 1] = actual;
 }
 
+int comparaciones = 0;
+
 Console.WriteLine();
 Console.WriteLine("Búsqueda por ISBN:");
 
@@ -141,6 +143,36 @@ foreach (Titulo libro in libros)
     Console.WriteLine(libro.Nombre + "  Disponibles: " + libro.Disponibles() + "  Préstamos: " + libro.Prestamos);
 }
 
+Console.WriteLine();
+Console.WriteLine("Comparaciones de la búsqueda por ISBN:");
+
+long[] arregloIsbn = new long[porIsbn.Count];
+
+for (int i = 0; i < porIsbn.Count; i++)
+{
+    arregloIsbn[i] = porIsbn[i].Isbn;
+}
+
+long[] consultas = { 2508077164968, 2508077564065, 2508078096107, 2508078875955, 2508070000000 };
+
+foreach (long isbn in consultas)
+{
+    comparaciones = 0;
+    int propia = BuscarPorIsbn(porIsbn, isbn);
+
+    Contador contador = new Contador();
+    int net = Array.BinarySearch(arregloIsbn, isbn, contador);
+
+    string coinciden = "No";
+
+    if (propia == net || (propia == -1 && net < 0))
+    {
+        coinciden = "Sí";
+    }
+
+    Console.WriteLine(isbn + "  Propia: " + comparaciones + "  Array.BinarySearch: " + contador.Total + "  Coinciden: " + coinciden);
+}
+
 int BuscarPorIsbn(List<Titulo> lista, long isbn)
 {
     int inicio = 0;
@@ -149,6 +181,7 @@ int BuscarPorIsbn(List<Titulo> lista, long isbn)
     while (inicio <= fin)
     {
         int medio = (inicio + fin) / 2;
+        comparaciones++;
 
         if (lista[medio].Isbn == isbn)
         {
@@ -194,5 +227,16 @@ void OrdenarPorPrestamos(List<Titulo> lista)
         }
 
         lista[j + 1] = actual;
+    }
+}
+
+class Contador : IComparer<long>
+{
+    public int Total = 0;
+
+    public int Compare(long a, long b)
+    {
+        Total++;
+        return a.CompareTo(b);
     }
 }
