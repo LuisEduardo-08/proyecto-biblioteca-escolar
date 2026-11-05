@@ -24,5 +24,12 @@ búsqueda binaria sobre una copia ordenada por ISBN.
 
 ## Carpetas
 
-- docs: documentos del proyecto (Diseño preliminar)
-- BibliotecaEscolar: código del programa (se agrega a partir del día 2)
+- docs: documentos del proyecto (Diseño preliminar, Prueba de escritorio, Informe y Salida completa)
+- BibliotecaEscolar: código del programa
+
+## Cómo correrlo
+
+```
+cd proyecto-biblioteca-escolar
+dotnet run --project BibliotecaEscolar
+```
